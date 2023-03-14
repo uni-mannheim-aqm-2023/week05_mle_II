@@ -2,8 +2,8 @@
 title: "AQM Week 05 -- More Maximum Likelihood"
 author: 
   - Oliver Rittmann
-  - Viktoriia Semenova
-date: "March 17, 2022"
+  - Domantas Undzėnas
+date: "March 16, 2023"
 output:
   pdf_document:
     toc: yes
@@ -288,7 +288,7 @@ We also need some (fake) data:
 
 ```{r ML Linear Regression with Hessian II}
 
-set.seed(20220317)
+set.seed(20230316)
 
 n <- 500
 X <- cbind(1, runif(n), runif(n))
@@ -362,17 +362,7 @@ $$
 $$
 
 ```{r Exercise I: From the Hessian to Standard Errors, eval=FALSE, collapse=TRUE}
-# get the Hessian from optim
-res$hessian
-# Calculate the observed Fisher Matrix
--res$hessian
-# Calculate the variance-covariance matrix
-solve(-res$hessian)
-# Get the standard errors
-sqrt(diag(solve(-res$hessian)))
 
-mle_se <- sqrt(diag(solve(-res$hessian)))
-mle_se
 ```
 
 
@@ -398,7 +388,7 @@ That has been really simple for a change. One problem with it though is that the
 Let's set up some more (but less) fake data to further inspect that problem.
 
 ```{r MLE and small samples... I}
-set.seed(20220317)
+set.seed(20230316)
 
 # we simulate 50 instead of 500 observations
 n <- 50 
@@ -593,7 +583,7 @@ median(res)
 Now, we want to use bootstrapping to calculate standard errors of our ML estimates. I think, we can do this together. Let's say we have a really small data set like this one:
 
 ```{r Bootstrapping ML Standard Errors}
-set.seed(20220317)
+set.seed(20230316)
 n <- 20
 X <- cbind(1, runif(n), runif(n))
 beta <- runif(ncol(X)) * 10
@@ -643,25 +633,16 @@ To estimate bootstrapped standard errors, we need to:
 
 mle_bs <- function(data) {
   # 1) draw the bootstrap sample
-  bs_samp <- data[sample(1:nrow(data), replace = TRUE),] # sample(data, replace = T)
+
   
   # 2) extract y and X from the data frame
-  y <- bs_samp$y
-  X <- cbind(1, bs_samp$x1, bs_samp$x2)
+
   
   # 3) maximum likelihood estimation
-  res <- optim(
-    startvals,
-    ll_linear,
-    y = y,
-    X = X,
-    control = list(fnscale = -1),
-    lower = 0.001,
-    method = "L-BFGS-B"
-  )
+
   
   # 4) return point estimates
-  return(res$par)
+ 
 }
 
 # If you did everything correctly, the following code should work:
@@ -890,7 +871,7 @@ Again, what do you conclude?
 
 # Concluding Remarks
 
-You will have two weeks for homework assignment 3. In the homework you will have another look at maximum likelihood by hand (which you can already do) and implement heteroskedastic regression (Thomas will tell you more about this in next week's lecture).
+In the homework you will have another look at maximum likelihood by hand (which you can already do) and implement heteroskedastic regression. Those of you who are very brave will also try their hand at Monte Carlo simulations.
 
 
 
