@@ -1821,9 +1821,10 @@ estimates.</p>
 diagonal elements of the inverse of the negative Hessian
 matrix</strong>.</p>
 <p><span class="math display">\[
-\hat{SE}(\hat\theta) = \sqrt{\Bigg(-\underbrace{\frac{\partial^2
+\hat{SE}(\hat\theta) =
+\sqrt{\text{diag}\Bigg(\Bigg(-\underbrace{\frac{\partial^2
 \ell(\theta|y)}{\partial \theta \partial
-\theta&#39;}}_{\text{Hessian}}\Bigg)^{-1}}
+\theta&#39;}}_{\text{Hessian}}\Bigg)^{-1}\Bigg)}
 \]</span></p>
 <p>Let’s compare these standard errors to those of an OLS
 regression.</p>
@@ -2108,16 +2109,16 @@ distributions.</li>
 
 mle_bs &lt;- function(data) {
   # 1) draw the bootstrap sample
-
+  
   
   # 2) extract y and X from the data frame
-
+  
   
   # 3) maximum likelihood estimation
-
+  
   
   # 4) return point estimates
- 
+  
 }
 
 # If you did everything correctly, the following code should work:

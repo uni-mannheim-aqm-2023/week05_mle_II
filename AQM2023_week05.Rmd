@@ -359,7 +359,7 @@ It's your turn. Please calculate the standard errors for our ML estimates.
 Remember: The standard errors are **the square root of the diagonal elements of the inverse of the negative Hessian matrix**.
 
 $$
-\hat{SE}(\hat\theta) = \sqrt{\Bigg(-\underbrace{\frac{\partial^2 \ell(\theta|y)}{\partial \theta \partial \theta'}}_{\text{Hessian}}\Bigg)^{-1}}
+\hat{SE}(\hat\theta) = \sqrt{\text{diag}\Bigg(\Bigg(-\underbrace{\frac{\partial^2 \ell(\theta|y)}{\partial \theta \partial \theta'}}_{\text{Hessian}}\Bigg)^{-1}\Bigg)}
 $$
 
 ```{r Exercise I: From the Hessian to Standard Errors, eval=FALSE, collapse=TRUE}
@@ -634,16 +634,16 @@ To estimate bootstrapped standard errors, we need to:
 
 mle_bs <- function(data) {
   # 1) draw the bootstrap sample
-
+  
   
   # 2) extract y and X from the data frame
-
+  
   
   # 3) maximum likelihood estimation
-
+  
   
   # 4) return point estimates
- 
+  
 }
 
 # If you did everything correctly, the following code should work:
