@@ -132,7 +132,7 @@ The Hessian matrix is a matrix of second derivatives of the log-likelihood funct
 
 *What is in this formula and how is related to the curvature of the curve?*
 
-Below you can see two _stylized_ log-likelihood functions. Let's say that we can approximate the curvature of these log-likelihood function in the area around the maximum with quadratic functions:
+Below you can see two _stylized_ log-likelihood functions. Let's say that we can approximate the curvature of these log-likelihood function in the area around the maximum with quadratic functions. [In practice, it is sometimes possible to approximate the log-likelihood of a normal distribution with a quadratic function, see 4.2 onwards of this link](https://strimmerlab.github.io/publications/lecture-notes/MATH20802/quadratic-approximation-and-normal-asymptotics.html?fbclid=IwAR0bviB6wKSfvUqW5Zip36MTU6eHbp-x-wrtezDNA8Cq3dDj_IxC1CJ3tD4)
 
 $$
 f_1(\theta) = -0.3\theta^2 \, \text{and} \, f_2(\theta) = -3\theta^2
