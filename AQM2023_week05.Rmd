@@ -92,7 +92,7 @@ curve(-0.3*x^2,
       yaxt = "n",
       xaxt = "n",
       ylab = "Likelihood",
-      xlab = "Parameter",
+      xlab = expression(paste("Parameter ", theta)),
       bty = "n",
       lwd = 2,
       col = viridis(1))
@@ -107,7 +107,7 @@ curve(-3*x^2,
       yaxt = "n",
       xaxt = "n",
       ylab = "",
-      xlab = "Parameter",
+      xlab = expression(paste("Parameter ", theta)),
       bty = "n",
       lwd = 2,
       col = viridis(1))
@@ -128,30 +128,32 @@ $$
 \end{aligned}
 $$
 
-Hessian is simply a matrix of second derivatives of the log-likelihood function with respect to parameters (or the derivatives of the Score, or the rate of change of the rate of change). 
+The Hessian matrix is a matrix of second derivatives of the log-likelihood function with respect to parameters (or the derivatives of the Score, or the rate of change of the rate of change). 
 
 *What is in this formula and how is related to the curvature of the curve?*
 
-Remember how a linear model is basically a quadratic function? Let's look at two example quadratic functions we plotted above:
+Below you can see two _stylized_ log-likelihood functions. Let's say that we can approximate the curvature of these log-likelihood function in the area around the maximum with quadratic functions:
 
 $$
-f_1(x) = -0.3x^2 \, \text{and} \, f_2(x) = -3x^2
+f_1(\theta) = -0.3\theta^2 \, \text{and} \, f_2(\theta) = -3\theta^2
 $$
-These would be the first derivatives, the indicators of the instantaneous rate of change in $f(x)$ at some value $x_0$.
+These would be the first derivatives, the indicators of the instantaneous rate of change in $f(\theta)$ at some value $\theta_0$.
 
 $$
-f_1'(x) = 2 \cdot(-0.3x) = -0.6x \;  \text{and} \; f_2'(x) = -3x^2 = -6x
+f_1'(\theta) = 2 \cdot(-0.3\theta) = -0.6\theta \;  \text{and} \; f_2'(\theta) = -3\theta^2 = -6\theta
 $$
 And now the second derivatives, i.e. the rate of change of the rate of change. 
 
 $$
-f_1''(x) = - 0.6 \; \text{and} \; f_2''(x) = -6
+f_1''(\theta) = - 0.6 \; \text{and} \; f_2''(\theta) = -6
 $$
 And to relate the Hessian to Information matrix, let's look at the *negatives* of second derivatives (the expectations of a constant are a constant): 
 
 $$
--f_1''(x) = 0.6 \, \text{and} \, -f_2''(x) = 6
+-f_1''(\theta) = 0.6 \, \text{and} \, -f_2''(\theta) = 6
 $$
+
+The negative second derivate of the first function is lower than the negative second derivative of the second function. Now ask yourself: From just looking at the curvature of the two log-likelihood functions, would you be more certain about the maximum likelihood estimate of the first function or of the second function? And does this fit to their values of the negative second derivative?
 
 
 ```{r lik2, echo=FALSE,  fig.height=5, fig.width=8}
@@ -159,13 +161,13 @@ par(mfrow = c(1, 2))
 curve(-0.3*x^2,
       from = -2,
       to = 2,
-      main = "A Likelihood Function",
+      main = "A Log-Likelihood Function",
       font.main = 1,
       ylim = c(-7, 7),
       yaxt = "n",
       xaxt = "n",
-      ylab = "Likelihood",
-      xlab = "Parameter",
+      ylab = "Log-Likelihood",
+      xlab = expression(paste("Parameter ", theta)),
       bty = "n",
       lwd = 2,
       col = viridis(1))
@@ -177,7 +179,7 @@ curve(2*(-0.3)*x, # first derivative
 abline(h = -2*(-0.3), # second derivative 
        col = viridis(4)[3])
 legend("topright",
-       legend = c("likelihood function",
+       legend = c("log-likelihood function",
                   "first derivative",
                   "negative second derivative"),
        col = viridis(4)[c(1:3)],
@@ -186,13 +188,13 @@ legend("topright",
 curve(-3*x^2,
       from = -2,
       to = 2,
-      main = "Another Likelihood Function",
+      main = "Another Log-Likelihood Function",
       font.main = 1,
       ylim = c(-7, 7),
       yaxt = "n",
       xaxt = "n",
       ylab = "",
-      xlab = "Parameter",
+      xlab = expression(paste("Parameter ", theta)),
       bty = "n",
       lwd = 2,
       col = viridis(1))
@@ -214,8 +216,7 @@ $$
 $$
 
 Why is that? First, we know that MLE is consistent. That means that by the Law of Large Numbers, $\hat{\theta}_{ML} \rightarrow \theta_0$. 
-Second, the Central Limit Theorem causes the sampling distribution of $\hat{\theta}_{ML}$ to be asymptotically normal. You can think of a maximum of the (log-)likelihood as essentially the mean of a lot of likelihoods. 
-Third, the variance of the sampling distribution of $\hat{\theta}_{ML}$ is closely related to the matrix of second derivatives, the Hessian.
+Second, the Central Limit Theorem causes the sampling distribution of $\hat{\theta}_{ML}$ to be asymptotically normal. Third, the variance of the sampling distribution of $\hat{\theta}_{ML}$ is closely related to the matrix of second derivatives, the Hessian.
 This makes sense because second derivatives tell us something about the curvature of a function (see figure above). 
 
 All of this sounds complicated and confusing. But **the main message is**: We can estimate the variance-covariance matrix as the inverse of the negative Hessian matrix. The standard errors of $\hat{\theta}_{ML}$ can then be found by taking the square root of the diagonal elements of this matrix (the inverse of the negative Hessian matrix).
