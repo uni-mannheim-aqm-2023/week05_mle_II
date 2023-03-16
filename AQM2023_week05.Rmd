@@ -363,7 +363,17 @@ $$
 $$
 
 ```{r Exercise I: From the Hessian to Standard Errors, eval=FALSE, collapse=TRUE}
+# get the Hessian from optim
+res$hessian
+# Calculate the observed Fisher Matrix
+-res$hessian
+# Calculate the variance-covariance matrix
+solve(-res$hessian)
+# Get the standard errors
+sqrt(diag(solve(-res$hessian)))
 
+mle_se <- sqrt(diag(solve(-res$hessian)))
+mle_se
 ```
 
 
@@ -392,7 +402,7 @@ Let's set up some more (but less) fake data to further inspect that problem.
 set.seed(20230316)
 
 # we simulate 50 instead of 500 observations
-n <- 50 
+n <- 37 
 X <- cbind(1, runif(n), runif(n))
 beta <- c(-1, 0.6, -0.6)
 sigma2 <- 0.3
@@ -623,6 +633,9 @@ To estimate bootstrapped standard errors, we need to:
 ## Exercise II: MLE Bootstrap
 
 ```{r Exercise II: MLE Bootstrap, eval=FALSE}
+
+set.seed(20230316)
+
 # To speed things up:
 # Here are the steps that the function should execute:
 
@@ -634,16 +647,25 @@ To estimate bootstrapped standard errors, we need to:
 
 mle_bs <- function(data) {
   # 1) draw the bootstrap sample
-  
+  bs_samp <- data[sample(1:nrow(data), replace = TRUE),] # sample(data, replace = T)
   
   # 2) extract y and X from the data frame
-  
+  y <- bs_samp$y
+  X <- cbind(1, bs_samp$x1, bs_samp$x2)
   
   # 3) maximum likelihood estimation
-  
+  res <- optim(
+    startvals,
+    ll_linear,
+    y = y,
+    X = X,
+    control = list(fnscale = -1),
+    lower = 0.001,
+    method = "L-BFGS-B"
+  )
   
   # 4) return point estimates
-  
+  return(res$par)
 }
 
 # If you did everything correctly, the following code should work:
